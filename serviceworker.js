@@ -31,3 +31,34 @@ self.addEventListener('fetch', function(event) {
         })
     );
 });
+
+
+//////////////////////////////////////////////////////////
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+
+
+var firebaseConfig = {
+  apiKey: "AIzaSyB9oXa4NGHrjEtcql_UFC4x-ZFKiPpnPOU",
+  authDomain: "djangoryomakween.firebaseapp.com",
+  projectId: "djangoryomakween",
+  storageBucket: "djangoryomakween.appspot.com",
+  messagingSenderId: "885179350380",
+  appId: "1:885179350380:web:04ec1da888ea51ffe38749"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+////////////////////////////////////////////////////////////
+let messaging = firebase.messaging();
+/////////////// modelo de notificacion offline ////////////
+messaging.setBackgroundMessageHandler(function(payload) {
+    let titulo = 'Titulo'
+    let opciones = {
+        body: 'Cuerpo de Notificacion',
+        icon: '/static/img/icon.png'
+    }
+    self.registration.showNotification(titulo, opciones)
+});
+////////////////////////////////////////////////////////////
+
