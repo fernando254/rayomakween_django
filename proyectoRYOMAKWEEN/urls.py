@@ -21,6 +21,7 @@ from django.conf.urls.static import static #importar libreria de ubicaciones est
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('webRayoMakween.urls')),
+    path('',include('api.urls')),
     
 ]
 
