@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'webRayoMakween',
     'api',
     'rest_framework',
+    'pwa',
    
 ]
 
@@ -131,3 +132,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')

@@ -1,4 +1,5 @@
 
+from django.http import response
 from django.shortcuts import render
 #IMPORTAMOS LA TABLA
 from .models import Categoria, Galeria, Mecanico
@@ -13,6 +14,8 @@ from django.contrib.auth import authenticate, logout, login as login_aut
 from django.contrib.auth.decorators import login_required,permission_required
 
 # Create your views here.
+
+
 
 def crear_usuario(request):
     mensaje=''
@@ -293,3 +296,26 @@ def cancelar(request,id):
     mecanicos = Mecanico.objects.filter(dueno=request.user.username)
     datos = {"mecanicos":mecanicos,"mensaje":mensaje}
     return render(request,"admin_usuario.html",datos)
+
+
+
+import requests
+
+def consumir_api(request):
+
+    response = requests.get("http://127.0.0.1:8000/api/mecanicos/")
+    mecanicos = response.json()
+
+    response = requests.get("http://127.0.0.1:8000/api/categorias/")
+    categorias = response.json()
+
+    if request.POST:
+        nombre = request.POST.get("txtNombre")
+        response = requests.get("http://127.0.0.1:8000/api/buscar_mecanico/"+nombre+"/")
+        mecanicos = response.json()
+
+    contexto = {"mecanicos": mecanicos,"categorias":categorias}
+    return render(request,"consumir_api.html",contexto)
+
+
+  

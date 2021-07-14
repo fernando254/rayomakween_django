@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('webRayoMakween.urls')),
     path('',include('api.urls')),
+    path('',include('pwa.urls')),
     
 ]
 

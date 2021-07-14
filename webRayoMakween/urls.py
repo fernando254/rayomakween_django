@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import  index, galeria, cancelar, contratar, admin_usuario, formulario, agregar_imagen_galeria, contacto, registro, ficha, filtro_categoria, filtro_palabra_clave, filtro_nombre, filtro_cate, login, cerrar_sesion, crear_usuario, eliminar, buscar_modificar , modificar
+from .views import  index, galeria, consumir_api, cancelar, contratar, admin_usuario, formulario, agregar_imagen_galeria, contacto, registro, ficha, filtro_categoria, filtro_palabra_clave, filtro_nombre, filtro_cate, login, cerrar_sesion, crear_usuario, eliminar, buscar_modificar , modificar
 
 urlpatterns = [
     
@@ -43,6 +43,8 @@ urlpatterns = [
     path('admin_usuario/', admin_usuario,name='ADMINUSER'),
 
     path('cancelar/<id>/', cancelar,name='CANCELAR'),
+
+    path('consumir_api/', consumir_api,name='API'),
 
 
 ]
