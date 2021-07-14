@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block css %}
+
+
+<link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock css %}
+
+{% block contenido %}
+
+<section id="bienvenida">
+  <h2 style="text-align: center; margin-top: 20px;">Mantenciones Contratadas</h2>
+  <div style="text-align: center;">
+    <h4>Usuario: <b>{{user.username}}</b> </h4>
+    <h5>Nombre: <b>{{user.first_name}} {{user.last_name}}</b> </h5>
+  </div>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam quasi nihil, doloremque ullam iure nobis magnam
+    cum ratione, velit at dignissimos porro laboriosam, saepe commodi illo? Modi iusto quo libero.</p>
+</section>
+
+
+
+
+<div style="text-align: center; font-size: xx-large;">Listado Mecanico (Cantidad: {{cant}} )</div>
+<!-- Listado de macanicos y operaciones -->
+<section style="padding: 20px;">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Categoria</th>
+        <th>Imagen</th>
+        <th>Descripcion</th>
+        <th>Operacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reg in mecanicos %}
+      <tr>
+        <td>{{reg.nombre}}</td>
+        <td>{{reg.categoria.nombre}}</td>
+        <td>
+          <img src="{{reg.imagen.url}}" width="100px" height="100px">
+        </td>
+        <td>{{reg.descripcion}}</td>
+         <td>
+          <button class="btn btn-danger" onclick="cancelar('{{reg.nombre}}')">Cancelar</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+
+{% endblock contenido %}
+
+{% block js %}
+<script>
+
+  function eliminar(nombre) {
+    Swal.fire({
+      title: 'Desea cancelar la mantecion del mecanico ' + nombre + ' ?',
+      showCancelButton: true,
+      confirmButtonText: `Cancelar`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        location.href = '/cancelar/' + nombre + '/';
+      }
+    })
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+{% endblock js %}

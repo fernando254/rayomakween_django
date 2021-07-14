@@ -1,0 +1,26 @@
+
+
+#info {
+    background: black;
+    color: white;
+    font-family: cursive;
+    padding: 20px;
+    text-align: center;
+}
+
+#info .contenedor img{
+    width: 180px;
+    height: 180px;
+    border: white 9px solid;
+    border-radius: 50%;
+}
+
+#info .contenedor {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#info article{
+    margin:20px;
+}

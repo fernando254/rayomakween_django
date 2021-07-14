@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block css %}
+
+
+<link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock css %}
+
+{% block contenido %}
+
+<section id="bienvenida">
+  <h2 style="text-align: center; margin-top: 20px;">Sistema de Registro de Mantenciones</h2>
+  <div style="text-align: center;">
+    <h4>Usuario: <b>{{user.username}}</b> </h4>
+    <h5>Nombre: <b>{{user.first_name}} {{user.last_name}}</b> </h5>
+  </div>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam quasi nihil, doloremque ullam iure nobis magnam
+    cum ratione, velit at dignissimos porro laboriosam, saepe commodi illo? Modi iusto quo libero.</p>
+</section>
+
+
+<section id="formulario">
+
+  <form class="form-registro" action="{% url 'REGISTRO' %}" enctype="multipart/form-data" method="post"
+    onsubmit="return validarFormulario()">
+    {% csrf_token %}
+    <h2 class="form-titulo">Nueva Ficha Mecanico</h2>
+
+    <div class="contenedor-input">
+      <input class="col-p" type="text" name="txtNombre" id="txtNombre" placeholder="nombre" required minlength="3"
+        value="{{mecanico.nombre}}">
+      <input class="col-p" type="text" name="txtDesc" id="txtDesc" placeholder="desc" required
+        value="{{mecanico.descripcion}}">
+
+      <div>Imagen Actual: <a href="{{mecanico.imagen.url}}"> {{mecanico.imagen.url}} </a> </div>
+      <input class="col-g" type="file" name="txtImg" id="txtImg">
+      <select class="col-g" style="margin: 10px; padding: 10px;" name="cboCategoria" id="cboCategoria">
+        {% for reg in cate %}
+        <option>{{reg.nombre}}</option>
+        {% endfor %}
+
+      </select>
+
+      <input class="btn-registrar" type="submit" value="Registrar">
+      <input class="btn-registrar" type="reset" value="Limpiar">
+
+    </div>
+  </form>
+
+  <div style="text-align: center;color:black">{{mensaje}}</div>
+
+</section>
+
+<div style="text-align: center; font-size: xx-large;">Listado Mecanico (Cantidad: {{cant}} )</div>
+<!-- Listado de macanicos y operaciones -->
+<section style="padding: 20px;">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Categoria</th>
+        <th>Imagen</th>
+        <th>Descripcion</th>
+        <th>Operacion</th>
+        <th>Publicar</th>
+        <th>Comentario</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reg in mecanicos %}
+      <tr>
+        <td>{{reg.nombre}}</td>
+        <td>{{reg.categoria.nombre}}</td>
+        <td>
+          <img src="{{reg.imagen.url}}" width="100px" height="100px">
+        </td>
+        <td>{{reg.descripcion}}</td>
+        <td>
+          <button class="btn btn-danger" onclick="eliminar('{{reg.nombre}}')">Eliminar</button>
+          <button class="btn btn-warning" onclick="modificar('{{reg.nombre}}')">Modificar</button>
+          <button class="btn btn-primary" onclick="galeria('{{reg.nombre}}')" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">Agregar Imagen</button>
+        </td>
+        <td>
+          {% if reg.publicar %}
+          PUBLICADO
+          {% else %}
+          <div style="color: red;">NO PUBLICADO</div>
+          {% endif %}
+        </td>
+        <td>
+          {{reg.comentario}}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- Ventana modal agregar imagen -->
+<section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Imagen <div id="nombre_mecanico"></div>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'AGREGARIMG' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-body">
+
+            <input type="file" name="txtImg" id="txtImg">
+            <input type="text" name="txtMecanico" id="txtMecanico">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock contenido %}
+
+{% block js %}
+<script>
+
+  function galeria(nombre) {
+    document.getElementById("nombre_mecanico").innerHTML = nombre;
+    document.getElementById("txtMecanico").value=nombre;
+  }
+
+  function modificar(nombre) {
+    location.href = '/buscar_modificar/' + nombre + '/';
+  }
+
+  function eliminar(nombre) {
+    /* var opcion = confirm("desea eliminar mantencion mecanico"+nombre+" ?")
+     if (opcion==true) {
+         location.href='/eliminar/'+nombre+'/';
+     }*/
+    Swal.fire({
+      title: 'Desea eliminar mantecion del mecanico ' + nombre + ' ?',
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        location.href = '/eliminar/' + nombre + '/';
+
+      }
+    })
+  }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+{% endblock js %}

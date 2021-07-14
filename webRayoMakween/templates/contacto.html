@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block contenido %}
+
+<section id="img_contacto">
+
+  <img src="{% static 'img/contactanos.png' %}" style=" padding-top: 40px; padding-bottom: 40px; " class="d-block w-100" alt="">
+
+</section>
+
+<div class="container p-5">
+  <h3 class="pb-4" style="text-align: center;">Formulario de contacto</h3>
+  <div class="card mx-3 mt-n5 shadow-lg"
+    style="border-radius: 10px; border-left:8px #007bff solid; border-right: none; border-top:none; border-bottom:none">
+    <div class="card-body">
+      <h4 class="card-title mb-3 text-primary text-uppercase">contacto</h4>
+
+      <form>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingTextInput1" placeholder="ingrese nombre"
+                pattern="[A-Za-z ]{3,45}" title="solo letras entre 3 a 45 caracteres" required>
+              <label for="floatingTextInput1">Nombre</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingTextInput2" placeholder="ingrese apellido"
+                pattern="[A-Za-z ]{3,45}" title="solo letras entre 3 a 45 caracteres" required>
+              <label for="floatingTextInput2">Apellido</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="floatingEmailInput" placeholder="name@example.com" required>
+          <label for="floatingEmailInput">Correo Electronico</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock contenido %}
